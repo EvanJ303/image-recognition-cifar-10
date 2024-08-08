@@ -55,4 +55,4 @@ for epoch in range(num_epochs):
 
 print("Training complete!")
 
-#this message means git works
+#End of mode
