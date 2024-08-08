@@ -55,4 +55,4 @@ for epoch in range(num_epochs):
 
 print("Training complete!")
 
-#End of mode
+#End of model
