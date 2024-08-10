@@ -47,17 +47,17 @@ class mainnetwork(nn.Module):
         self.linlayer1 = nn.Linear(14 * 5 * 5, 130)
         self.linlayer2 = nn.Linear(130, 10)
     def forward(self, x):
-        x = self.convlayer1(x)
+        forward1 = self.convlayer1(x)
+        forward1 = F.relu(forward1)
+        forward2 = self.poollayer1(forward1)
+        forward3 = self.convlayer2(forward2)
         x = F.relu(x)
-        x = self.poollayer1(x)
-        x = self.convlayer2(x)
-        x = F.relu(x)
-        x = self.poollayer2(x)
-        x = torch.flatten(x)
+        forward4 = self.poollayer2(forward3)
+        for = torch.flatten(forward4)
         x = self.linlayer1(x)
         x = F.relu(x)
-        x = self.linlayer2(x)
-        return x
+        final_output = self.linlayer2(x)
+        return final_output
 
 
 
@@ -73,3 +73,5 @@ SGDoptimize = torch.optim.SGD(model.parameters(), lr = learn_rate)
 torch.manual_seed(30)
 
 #Training Loop
+
+total_steps
