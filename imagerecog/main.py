@@ -40,6 +40,18 @@ classes = ('plane', 'car', 'bird', 'cat',
 class mainnetwork(nn.Module):
     def __init__(self):
         super(mainnetwork, self).__init__()
+        self.convlayer1 = nn.Conv2d(3, 7, 5)
+        nn.ReLU()
+        self.poollayer1 = nn.MaxPool2d(2, 2)
+        self.convlayer2 = nn.Conv2d(7, 14, 5)
+        nn.ReLU()
+        self.poollayer2 = nn.MaxPool2d(2, 2)
+        self.linlayer1 = nn.Linear(14 * 5 * 5, 130)
+        self.linlayer2 = nn.Linear(130, 10)
+    def forward(self, x):
+        
+
+
 
 #Hyperparams
 learn_rate=0.1
