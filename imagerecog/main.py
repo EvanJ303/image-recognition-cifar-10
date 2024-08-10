@@ -46,18 +46,18 @@ class mainnetwork(nn.Module):
         self.poollayer2 = nn.MaxPool2d(2, 2)
         self.linlayer1 = nn.Linear(14 * 5 * 5, 130)
         self.linlayer2 = nn.Linear(130, 10)
-    def forward(self, x):
-        forward1 = self.convlayer1(x)
+    def forward(self, network_in):
+        forward1 = self.convlayer1(network_in)
         forward1 = F.relu(forward1)
         forward2 = self.poollayer1(forward1)
         forward3 = self.convlayer2(forward2)
-        x = F.relu(x)
+        forward3 = F.relu(forward3)
         forward4 = self.poollayer2(forward3)
-        for = torch.flatten(forward4)
-        x = self.linlayer1(x)
-        x = F.relu(x)
-        final_output = self.linlayer2(x)
-        return final_output
+        forward5 = torch.flatten(forward4, start_dim=1)
+        forward6 = self.linlayer1(forward5)
+        forward6 = F.relu(forward6)
+        forwardfinal = self.linlayer2(forward6)
+        return forwardfinal
 
 
 
