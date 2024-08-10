@@ -70,8 +70,6 @@ model = mainnetwork().to('cuda')
 criterion = nn.CrossEntropyLoss
 SGDoptimize = torch.optim.SGD(model.parameters(), lr = learn_rate)
 
-torch.manual_seed(30)
+torch.manual_seed(50)
 
 #Training Loop
-
-total_steps
