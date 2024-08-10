@@ -3,11 +3,7 @@ import torch.nn.functional as F
 import torch.nn as nn
 import torchvision
 import torch.optim as optim
-from PIL import Image
-from torch.utils.data import Dataset, DataLoader
-from torchvision import datasets
 import torchvision.transforms as transforms
-from torchvision.transforms import ToTensor
 
 training = True
 Saving_State = True
@@ -66,7 +62,9 @@ def main():
     learn_rate= 0.003
     epoch_count = 50
 
-    model = mainnetwork().to('cuda')
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+    model = mainnetwork().to(device)
     criterion = nn.CrossEntropyLoss()
     SGDoptimize = torch.optim.SGD(model.parameters(), lr = learn_rate)
 
@@ -75,7 +73,7 @@ def main():
 
     for epoch in range (epoch_count):
         for b_idx, (inputs, targets) in enumerate(trainloader):
-            inputs, targets = inputs.to('cuda'), targets.to('cuda')
+            inputs, targets = inputs.to(device), targets.to(device)
 
             SGDoptimize.zero_grad()
 
