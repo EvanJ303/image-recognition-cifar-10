@@ -85,7 +85,7 @@ def main():
                 loss.backward()
                 SGDoptimize.step()
 
-                if b_idx % 5 ==0:
+                if b_idx % 5 == 0:
                     print(f'loss: {loss.item()} epoch: {epoch+1}')
 
     if testing == True:
