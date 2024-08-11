@@ -47,3 +47,8 @@ MLvenv
 # batches #
 ###########
 data
+
+# model saves#
+##############
+*.pth
+*.pt
