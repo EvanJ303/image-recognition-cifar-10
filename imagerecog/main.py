@@ -10,7 +10,6 @@ Saving_State = True
 Loading_State = True
 testing = True
 
-
 transform = transforms.Compose([
     transforms.ToTensor(),
     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
@@ -20,23 +19,26 @@ def main():
 
     batch_size = 14
 
-    trainset = torchvision.datasets.CIFAR10(root = './data', train = True,
+    if Loading_State == True:
+        
+
+    if training ==True:
+        trainset = torchvision.datasets.CIFAR10(root = './data', train = True,
+                                                download = True, transform = transform)
+        trainloader = torch.utils.data.DataLoader(trainset, batch_size = batch_size,
+                                                shuffle = True, num_workers = 2)
+
+    if testing == True:
+        testset = torchvision.datasets.CIFAR10(root = './data', train = False,
                                             download = True, transform = transform)
-    trainloader = torch.utils.data.DataLoader(trainset, batch_size = batch_size,
-                                            shuffle = True, num_workers = 2)
-
-    testset = torchvision.datasets.CIFAR10(root = './data', train = False,
-                                        download = True, transform = transform)
-    testloader = torch.utils.data.DataLoader(testset, batch_size=batch_size,
-                                            shuffle = False, num_workers = 2)
-
-    classes = ('plane', 'car', 'bird', 'cat',
-            'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
-
+        testloader = torch.utils.data.DataLoader(testset, batch_size = batch_size,
+                                                shuffle = False, num_workers = 2)
+        classes = ('plane', 'car', 'bird', 'cat',
+                'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 
     class mainnetwork(nn.Module):
         def __init__(self):
-            super(mainnetwork, self).__init__()
+            super().__init__()
             self.convlayer1 = nn.Conv2d(3, 7, 3)
             self.poollayer1 = nn.MaxPool2d(2, 2)
             self.convlayer2 = nn.Conv2d(7, 14, 3)
@@ -59,8 +61,8 @@ def main():
             network_out = self.linlayer3(forward7)
             return network_out
 
-    learn_rate= 0.003
-    epoch_count = 50
+    learn_rate= 0.005
+    epoch_count = 45
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -70,21 +72,39 @@ def main():
 
     torch.manual_seed(50)
 
+    if training == True:
+        for epoch in range (epoch_count):
+            for b_idx, (inputs, targets) in enumerate(trainloader):
+                inputs, targets = inputs.to(device), targets.to(device)
 
-    for epoch in range (epoch_count):
-        for b_idx, (inputs, targets) in enumerate(trainloader):
-            inputs, targets = inputs.to(device), targets.to(device)
+                SGDoptimize.zero_grad()
 
-            SGDoptimize.zero_grad()
+                outputs = model(inputs)
+                loss = criterion(outputs, targets)
 
-            outputs = model(inputs)
-            loss = criterion(outputs, targets)
+                loss.backward()
+                SGDoptimize.step()
 
-            loss.backward()
-            SGDoptimize.step()
+                if b_idx % 5 ==0:
+                    print(f'loss: {loss.item()} epoch: {epoch+1}')
 
-            if b_idx % 5 ==0:
-                print(f'Loss: {loss.item()}')
+    if testing == True:
+        print("time for eval")
+        model.eval()
+        score = 0
+        count = 0
+        with torch.no_grad():
+            for inputs, targets in testloader:
+                inputs, targets = inputs.to(device), targets.to(device)
+                outputs = model(inputs)
+                unused, net_prediction = torch.max(outputs.data, 1)
+                count += targets.size(0)
+                score += (net_prediction == targets).sum().item()
+        acc = score/count
+        print(f"accuracy is: {acc}")
 
+    if Saving_State == True:
+        torch.save(model.state_dict(), 'model_save.pth')
+                
 if __name__ == '__main__':
     main()
