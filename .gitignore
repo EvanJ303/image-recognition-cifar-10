@@ -40,15 +40,15 @@ Thumbs.db
 #######################
 .vs
 
-# venvs #
+# Venvs #
 #########
 MLvenv
 
-# batches #
+# Batches #
 ###########
 data
 
-# model saves#
+# Model saves#
 ##############
 *.pth
 *.pt
