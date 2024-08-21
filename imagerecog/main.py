@@ -122,7 +122,7 @@ def main():
             for inputs, targets in testloader:
                 inputs, targets = inputs.to(device), targets.to(device)
                 outputs = model(inputs)
-                unused, net_prediction = torch.max(outputs.data, 1)
+                _, net_prediction = torch.max(outputs.data, 1)
                 count += targets.size(0)
                 score += (net_prediction == targets).sum().item()
         acc = score/count
