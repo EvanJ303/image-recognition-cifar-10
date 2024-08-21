@@ -31,9 +31,10 @@ class mainnetwork(nn.Module):
         self.poollayer1 = nn.MaxPool2d(2, 2)
         self.convlayer3 = nn.Conv2d(64, 128, 3)
         self.poollayer2 = nn.MaxPool2d(2, 2)
-        self.linlayer1 = nn.Linear(50, 4608)
+        self.linlayer1 = nn.Linear(4608, 4608)
         self.linlayer2 = nn.Linear(4608, 1000)
-        self.linlayer3 = nn.Linear(1000, 10)
+        self.linlayer3 = nn.Linear(1000, 500)
+        self.linlayer4 = nn.Linear(500, 10)
     def forward(self, network_in):
         forward = self.convlayer1(network_in)
         forward = F.relu(forward)
@@ -48,7 +49,9 @@ class mainnetwork(nn.Module):
         forward = F.relu(forward)
         forward = self.linlayer2(forward)
         forward = F.relu(forward)
-        network_out = self.linlayer3(forward)
+        forward = self.linlayer3(forward)
+        forward = F.relu(forward)
+        network_out = self.linlayer4(forward)
         return network_out
 
 #Main function
