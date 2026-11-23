@@ -1,0 +1,2 @@
+# CIFAR-10 Image Recognition
+My first deep learning project with PyTorch. The script trains a convolutional neural network to classify the CIFAR-10 dataset, periodically measuring validation accuracy. Once the model is trained, its weights are saved as a .pth file.
